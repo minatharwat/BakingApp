@@ -1,5 +1,7 @@
 package com.example.user.bakingapp.Fragments;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.user.bakingapp.Adapters.RecipeSteps;
+import com.example.user.bakingapp.AppWidget.BakingWidgetProvider;
 import com.example.user.bakingapp.IngredientActivity;
 import com.example.user.bakingapp.Models.RecipeCard;
 import com.example.user.bakingapp.NameListener;
@@ -25,6 +28,9 @@ import com.example.user.bakingapp.Utilites.Logs;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.user.bakingapp.Fragments.MainFragment.ingredient_for_widget;
+
 
 
 /**
@@ -48,6 +54,10 @@ public class DetailFragment extends Fragment implements Volley.API {
     public static int za=-1;
 
     TextView ingredit_click_text;
+
+
+
+
 
     int flag;
     @Nullable
@@ -92,10 +102,14 @@ public class DetailFragment extends Fragment implements Volley.API {
         });
 
         //send to the widget the id of last visited recipe
-        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-        edit.putInt("lolo",flag);
-        edit.apply();
+//        SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+//        edit.putInt("lolo",flag);
+//        edit.apply();
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("saved", flag);
+        editor.apply();
 
         return view;
     }
@@ -110,7 +124,16 @@ public class DetailFragment extends Fragment implements Volley.API {
 
      set_controls(s_);
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int retrievedValue = sp.getInt("saved" , 0);
 
+        ingredient_for_widget=JasonParser.parseingrdients(msg,retrievedValue);
+
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                new ComponentName(getActivity(), BakingWidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widgetCollectionList);
 
 
     }

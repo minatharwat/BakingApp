@@ -18,6 +18,15 @@ public class RecipeCard implements Parcelable {
     private String st_videoUrl;
     private String st_thumbnail;
     private int pos;
+    private String Image;
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String image) {
+        Image = image;
+    }
 
     public int getPos() {
         return pos;
@@ -121,6 +130,7 @@ public class RecipeCard implements Parcelable {
         st_videoUrl = in.readString();
         st_thumbnail = in.readString();
         pos=in.readInt();
+        Image=in.readString();
     }
 
     @Override
@@ -141,6 +151,7 @@ public class RecipeCard implements Parcelable {
         dest.writeString(st_videoUrl);
         dest.writeString(st_thumbnail);
         dest.writeInt(pos);
+        dest.writeString(Image);
     }
 
     @SuppressWarnings("unused")

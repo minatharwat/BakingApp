@@ -1,6 +1,9 @@
 package com.example.user.bakingapp.Fragments;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,6 +30,8 @@ import java.util.List;
 public class MainFragment extends Fragment implements Volley.API  {
 
 
+
+    public static List<RecipeCard> ingredient_for_widget;
 
 
 
@@ -56,6 +61,11 @@ public class MainFragment extends Fragment implements Volley.API  {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -69,12 +79,17 @@ public class MainFragment extends Fragment implements Volley.API  {
         p = new ArrayList<RecipeCard>();
         p.clear();
 
+        ingredient_for_widget=new ArrayList<>();
+        ingredient_for_widget.clear();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int retrievedValue = sp.getInt("saved" , 0);
 
+        ingredient_for_widget=JasonParser.parseingrdients(msg,retrievedValue);
 
        RecipeCard w=new RecipeCard();
         p = JasonParser.parseCards(msg);
 
-        //Logs.toast(getContext(),""+get_po());
+
 
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
@@ -90,6 +105,7 @@ public class MainFragment extends Fragment implements Volley.API  {
         recyclerView.setAdapter(adabter);
 
     }
+
 
 
 

@@ -1,6 +1,8 @@
 package com.example.user.bakingapp.Fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +17,8 @@ import com.example.user.bakingapp.Utilites.JasonParser;
 
 import java.util.ArrayList;
 import java.util.List;
+import static com.example.user.bakingapp.Fragments.MainFragment.ingredient_for_widget;
+
 
 /**
  * Created by Mina on 07/11/2017.
@@ -23,7 +27,8 @@ import java.util.List;
 public class IngrdientFragment extends Fragment implements Volley.API {
     TextView textView;
     protected int flag;
-    List<RecipeCard> ing;
+   public static List<RecipeCard> ing;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,6 +40,8 @@ public class IngrdientFragment extends Fragment implements Volley.API {
 
         textView=(TextView)view.findViewById(R.id.ingredit_text);
 
+
+
         return view;
     }
 
@@ -43,12 +50,16 @@ public class IngrdientFragment extends Fragment implements Volley.API {
         ing=new ArrayList<>();
         ing.clear();
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int retrievedValue = sp.getInt("saved" , 0);
+
+        ingredient_for_widget=JasonParser.parseingrdients(msg,retrievedValue);
+
         ing= JasonParser.parseingrdients(msg,flag);
 //        for (int i=0;i<ing.size();i++){
 //            textView.setText(ing.get(i).getIng_quantity()+""+ing.get(i).getIng_measure()+" "+ing.get(i).getIng_ingredient()+"/n");
 //        }
         StringBuilder builder = new StringBuilder();
-
 
         for (int i=0;i<ing.size();i++) {
                 builder.append(ing.get(i).getIng_quantity()+" "+ing.get(i).getIng_measure()+" "+ing.get(i).getIng_ingredient() + "."+"\n");
@@ -56,5 +67,6 @@ public class IngrdientFragment extends Fragment implements Volley.API {
 
             textView.setText(builder.toString());
         }
+
 
 }

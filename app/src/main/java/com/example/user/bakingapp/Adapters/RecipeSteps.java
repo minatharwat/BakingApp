@@ -43,10 +43,6 @@ public class RecipeSteps extends RecyclerView.Adapter<RecipeSteps.viewHolder> {
 
             holder.short_desc.setText(obj.getSt_shortDescription());
 
-        //   holder.id.setText(String.valueOf(obj.getId()));
-        // holder.description.setText(String.valueOf(obj.description));
-       // holder.end_date.setText(String.valueOf(obj.end_date));
-        //  Picasso.with(mcontext).load(mcontext.getString(R.string.base_url)+"/images/"+obj.getImage().substring(2)).error(R.drawable.s1).into(holder.image);
 
     }
 

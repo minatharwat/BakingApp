@@ -6,12 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.user.bakingapp.DetailActivity;
 import com.example.user.bakingapp.Models.RecipeCard;
 import com.example.user.bakingapp.R;
 import com.example.user.bakingapp.Utilites.Logs;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,12 +46,10 @@ public class RecipeCards extends RecyclerView.Adapter<RecipeCards.viewHolder> {
         obj=m.get(position);
         holder.name.setText(obj.getName());
 
+        if (!obj.getImage().isEmpty()) {
 
-        //   holder.id.setText(String.valueOf(obj.getId()));
-        // holder.description.setText(String.valueOf(obj.description));
-       // holder.end_date.setText(String.valueOf(obj.end_date));
-        //  Picasso.with(mcontext).load(mcontext.getString(R.string.base_url)+"/images/"+obj.getImage().substring(2)).error(R.drawable.s1).into(holder.image);
-
+            Picasso.with(mcontext).load(obj.getImage()).error(R.drawable.cheescaek).placeholder(R.drawable.cheescaek).into(holder.imageView);
+        }
 
     }
 
@@ -60,10 +60,12 @@ public class RecipeCards extends RecyclerView.Adapter<RecipeCards.viewHolder> {
 
     class viewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView name;
+        ImageView imageView;
 
         public viewHolder(View itemView) {
             super(itemView);
             name=(TextView)itemView.findViewById(R.id.name_id);
+            imageView=(ImageView)itemView.findViewById(R.id.image_recipe);
 
 
             itemView.setOnClickListener(this);

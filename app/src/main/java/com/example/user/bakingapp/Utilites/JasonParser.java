@@ -39,6 +39,7 @@ public class JasonParser {
 
                 item.setId(data_object.getInt("id"));
                 item.setName(data_object.getString("name"));
+                item.setImage(data_object.getString("image"));
                 recipeCards.add(item);
 
 

@@ -99,23 +99,27 @@ public class Step_DetailFragment extends Fragment {
         if ((video_link.isEmpty())&&thumbnail.isEmpty()) {
 
             simpleExoPlayerView.setVisibility(View.GONE);
-        }else if (video_link.isEmpty()&&!thumbnail.isEmpty()){
 
-            initplayer(Uri.parse(thumbnail));
-        }else {
+        }else if ((!video_link.isEmpty())&&thumbnail.isEmpty()) {
 
             initplayer(Uri.parse(video_link));
         }
+        thumbnail_image = (ImageView) view.findViewById(R.id.thumb_image);
 
         if (!(thumbnail.isEmpty())) {
-            String substr = thumbnail.substring(thumbnail.length() - 3);
-            if (!(substr.equals("mp4"))) {
-                thumbnail_image = (ImageView) view.findViewById(R.id.thumb_image);
+
+            if (!thumbnail.equals("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffda20_7-add-cream-mix-creampie/7-add-cream-mix-creampie.mp4")) {
 
                 Glide.with(getContext())
                         .load(thumbnail)
                         .into(thumbnail_image);
                 thumbnail_image.setVisibility(View.VISIBLE);
+                simpleExoPlayerView.setVisibility(View.GONE);
+
+            }
+            else {
+
+                thumbnail_image.setVisibility(View.GONE);
                 simpleExoPlayerView.setVisibility(View.GONE);
 
             }
@@ -151,13 +155,19 @@ public class Step_DetailFragment extends Fragment {
             }
         });
 
-        if (savedInstanceState!=null){
+        try {
 
-            exo_pos = savedInstanceState.getParcelable("po");
-            simpleExoPlayer.seekTo(exo_pos);
 
+            if (savedInstanceState != null) {
+
+                exo_pos = savedInstanceState.getParcelable("po");
+                simpleExoPlayer.seekTo(exo_pos);
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
 
         return  view;
     }
@@ -195,6 +205,17 @@ public class Step_DetailFragment extends Fragment {
         super.onDestroy();
         try {
                 relase();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            relase();
 
         }catch (Exception e){
             e.printStackTrace();
